@@ -1,8 +1,9 @@
-## An example of caching an expensive operation
+## An example of caching an expensive computation
 
 ## Store a matrix with a cached inverse
 
 makeCacheMatrix <- function(x = matrix()) {
+  # take a matrix x
   m <- NULL
   set <- function(y) {
     x <<- y
@@ -23,6 +24,7 @@ makeCacheMatrix <- function(x = matrix()) {
 ## cached inverse
 
 cacheSolve <- function(x, ...) {
+  # take an object constructed by makeCacheMatrix
   m <- x$getinverse()
   if (!is.null(m)) {
     message("getting cached data")
@@ -31,5 +33,6 @@ cacheSolve <- function(x, ...) {
   data <- x$get()
   m <- solve(data, ...)
   x$setinverse(m)
+  # return the inverse of the matrix
   m
 }
