@@ -1,15 +1,35 @@
-## Put comments here that give an overall description of what your
-## functions do
+## An example of caching an expensive operation
 
-## Write a short comment describing this function
+## Store a matrix with a cached inverse
 
 makeCacheMatrix <- function(x = matrix()) {
-
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setinverse <- function(solve) m <<- solve
+  getinverse <- function() m
+  # return a list of setters and getters for the matrix and its inverse
+  list(set = set, get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)
 }
 
 
-## Write a short comment describing this function
+## Compute the inverse of the matrix and cache it,
+## if it is not yet computed; otherwise, return the
+## cached inverse
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+  m <- x$getinverse()
+  if (!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setinverse(m)
+  m
 }
